@@ -60,9 +60,9 @@ const locations = [
   },
 ]
 
-const MapComponent = ({ center, zoom, onLocationSelect }: { center: google.maps.LatLngLiteral; zoom: number; onLocationSelect: (location: typeof locations[0]) => void }) => {
+const MapComponent = ({ center, zoom, onLocationSelect }: { center: { lat: number; lng: number }; zoom: number; onLocationSelect: (location: typeof locations[0]) => void }) => {
   const ref = useRef<HTMLDivElement>(null)
-  const [map, setMap] = useState<google.maps.Map>()
+  const [map, setMap] = useState<any>()
 
   useEffect(() => {
     if (ref.current && !map) {
@@ -129,15 +129,15 @@ const MapComponent = ({ center, zoom, onLocationSelect }: { center: google.maps.
   useEffect(() => {
     if (map) {
       // Clear existing markers
-      const markers: google.maps.Marker[] = []
+      const markers: any[] = []
       
       locations.forEach((location) => {
-        const marker = new google.maps.Marker({
+        const marker = new window.google.maps.Marker({
           position: location.coordinates,
           map,
           title: location.city,
           icon: {
-            path: google.maps.SymbolPath.CIRCLE,
+            path: window.google.maps.SymbolPath.CIRCLE,
             scale: 12,
             fillColor: "#81653f",
             fillOpacity: 1,
@@ -146,7 +146,7 @@ const MapComponent = ({ center, zoom, onLocationSelect }: { center: google.maps.
           },
         })
 
-        const infoWindow = new google.maps.InfoWindow({
+        const infoWindow = new window.google.maps.InfoWindow({
           content: `
             <div class="p-4 max-w-xs">
               <h3 class="font-semibold text-lg mb-2">${location.city}</h3>
@@ -201,7 +201,7 @@ const render = (status: Status) => {
 }
 
 export function GoogleMaps() {
-  const center: google.maps.LatLngLiteral = { lat: 14.4974, lng: -16.3166 } // Centre du Sénégal
+  const center: { lat: number; lng: number } = { lat: 14.4974, lng: -16.3166 } // Centre du Sénégal
   const zoom = 7
   const [selectedLocation, setSelectedLocation] = useState<typeof locations[0] | null>(null)
   const { ref, isVisible } = useScrollAnimation(0.1)
