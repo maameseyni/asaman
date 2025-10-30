@@ -26,7 +26,6 @@ export function VideoHero() {
           muted
           playsInline
           className="w-full h-full object-cover object-center"
-          poster="/luxury-modern-villa-aerial-view.jpg"
           style={{ 
             minHeight: '100vh',
             minWidth: '100vw',
