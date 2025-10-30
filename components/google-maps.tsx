@@ -65,8 +65,13 @@ const MapComponent = ({ center, zoom, onLocationSelect }: { center: { lat: numbe
   const [map, setMap] = useState<any>()
 
   useEffect(() => {
-    if (ref.current && !map) {
-      const newMap = new window.google.maps.Map(ref.current, {
+    if (
+      ref.current &&
+      !map &&
+      typeof window !== "undefined" &&
+      (window as any).google?.maps
+    ) {
+      const newMap = new (window as any).google.maps.Map(ref.current, {
         center,
         zoom,
         styles: [
@@ -127,17 +132,17 @@ const MapComponent = ({ center, zoom, onLocationSelect }: { center: { lat: numbe
   }, [ref, map, center, zoom])
 
   useEffect(() => {
-    if (map) {
+    if (map && typeof window !== "undefined" && (window as any).google?.maps) {
       // Clear existing markers
       const markers: any[] = []
       
       locations.forEach((location) => {
-        const marker = new window.google.maps.Marker({
+        const marker = new (window as any).google.maps.Marker({
           position: location.coordinates,
           map,
           title: location.city,
           icon: {
-            path: window.google.maps.SymbolPath.CIRCLE,
+            path: (window as any).google.maps.SymbolPath.CIRCLE,
             scale: 12,
             fillColor: "#81653f",
             fillOpacity: 1,
@@ -146,7 +151,7 @@ const MapComponent = ({ center, zoom, onLocationSelect }: { center: { lat: numbe
           },
         })
 
-        const infoWindow = new window.google.maps.InfoWindow({
+        const infoWindow = new (window as any).google.maps.InfoWindow({
           content: `
             <div class="p-4 max-w-xs">
               <h3 class="font-semibold text-lg mb-2">${location.city}</h3>
