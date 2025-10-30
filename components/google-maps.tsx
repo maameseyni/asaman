@@ -201,7 +201,7 @@ const render = (status: Status) => {
         </div>
       )
     default:
-      return null
+      return <></>
   }
 }
 
